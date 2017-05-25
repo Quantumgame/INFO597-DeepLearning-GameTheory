@@ -2,7 +2,7 @@
 
 # INFO 597 - Deep Learning
 
-Unless specified all readings come from:
+Unless specified all readings come from: http://www.deeplearningbook.org/
 - Week 1 - Read Intro to Deep Learning Book; Read Linear Algebra Section; Play around with Linear Algebra w/ Tensorflow
 - Week 2 - Read Probability Chapter; Play around with probability in Tensorflow; Read Numerical Stuff
 - Week 3 - Read Machine Learning Basics
