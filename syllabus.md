@@ -22,7 +22,9 @@ Unless specified all readings come from: http://www.deeplearningbook.org/
 # INFO 597 - Game Theory
 ### Readings
 [Game Theory: Analysis of Conflict by Roger B. Myerson](https://www.amazon.com/Game-Theory-Analysis-Roger-Myerson/dp/0674341163/ref=sr_1_sc_1?ie=UTF8&qid=1496361608&sr=8-1-spell&keywords=game+theory+myserson)
+
 [Algorithmic Game Theory with Tim Roughgarden](http://theory.stanford.edu/~tim/f13/f13.html)
+
 - Week 1 - Read [Essentials of Game Theory by Kevin Brow](http://physics.ujep.cz/~jskvor/KVM/TeorieHer/shoham.pdf)
 - Week 2 - Read Decision-Theorectial Foundations from Myserson
 - Week 3 - Read Basic Models from Myserson
