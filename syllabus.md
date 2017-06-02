@@ -10,14 +10,14 @@ Unless specified all readings come from: http://www.deeplearningbook.org/
 - Week 5 - Read about Optimization for Deep Learning; Read Practical Metholodogy
 - Week 6 - Read about CNNs.
 - Week 7 - Read about RNNs.
-- Week 8 - ??? 
+- Week 8 - ???
 - Week 9 and beyond: Read Papers and Apply to Finanical applications
 
 ### Applying Stuff:
 - Around Week 4: Start implementing Deep Feed foward network with toy examples
-- Around Week 5: Finish Deep Feed Foward Network with respect to Week 5 readings in mind
-- Around Week 6: Implement CNN
-- Around Week 7: Implement RNN
+- Around Week 5: Finish Deep Feed Foward Network with Week 5's readings in mind
+- Around Week 6: Implement CNN with toy dataset
+- Around Week 7: Implement RNN with toy dataset
 
 # INFO 597 - Game Theory
 ### Readings
@@ -32,7 +32,7 @@ Unless specified all readings come from: http://www.deeplearningbook.org/
 - Week 5 - Read Chapter 9 of Myserson
 - Week 6 - Watch Introduction & Mechanism Design Basics Lectures from Roughgarden and go over Lecture Notes 
 - Week 7 - Watch VCG Mechanism Lectures from Roughgarden and go over Lecture Notes
-- Week 8 - Watch Selfish Routing and the POA from Roughgarden and gover Lecture Notes
+- Week 8 - Watch Selfish Routing and the POA from Roughgarden and go over Lecture Notes
 - Week 9 and beyond: Read Papers and Apply to Financial applications
 
 ### Applying Stuff:
