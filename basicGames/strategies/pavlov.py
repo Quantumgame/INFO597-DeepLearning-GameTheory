@@ -1,6 +1,6 @@
 
 class Pavlov:
-    '''
+	'''
     Cooperate until punished then switch strategies.
     '''
 	def __init__(self):
