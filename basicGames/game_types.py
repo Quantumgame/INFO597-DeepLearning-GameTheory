@@ -1,7 +1,8 @@
 
 class PrisonersDilemma:
 
-	def __init__(self, prisoner_a, prisoner_b, reward=4, temptation=5, penalty=1, sucker=0):
+	def __init__(self, prisoner_a, prisoner_b, reward=4, 
+		temptation=5, penalty=1, sucker=0):
 		'''
 		'''
 		# Utility Values
