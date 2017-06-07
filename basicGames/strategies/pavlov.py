@@ -10,11 +10,12 @@ class Pavlov:
 		#No learning is done
 		pass
 
-	def strategy(self, history):
-		if not history:
+	def strategy(self, state, temptation=5, sucker=1):
+
+		if not state:
 			return self.defaultstrategy
-		elif history[-1] in (1,5) and self.defaultstrategy == 'cooperate':
+		elif state[-1] == sucker and self.defaultstrategy == 'cooperate':
 			self.defaultstrategy = 'defect'
-		elif history[-1] in (1,5) and self.defaultstrategy == 'defect':
+		elif state[-1] == sucker and self.defaultstrategy == 'defect':
 			self.defaultstrategy = 'cooperate'
 		return self.defaultstrategy
