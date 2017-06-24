@@ -9,12 +9,10 @@ class QLearn:
 		if agent_type is 'table':
 			self.agent = ql(2, obs_size, decay, lr,
 			explore_period, explore_random_prob, exploit_random_prob) # Cooperate or defect only 2 states
-		elif agent_type is 'net':
-			self.agent = qln(2)
-		elif agent_type is 'deepnet':
+		elif agent_type is 'deepnet' or agent_type is 'net':
 			# self.agent = dql(2)
 			pass
-			self.agent = qln(2)
+			self.agent = qln(2, 1)
 			#
 		else:
 			self.agent = ql(2)

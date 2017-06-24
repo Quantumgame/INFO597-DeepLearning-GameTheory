@@ -1,6 +1,7 @@
 import random
 import tensorflow as tf
 import numpy as np
+from .deep_q_learning import MLP, TargetMLP, DiscreteDeepQ
 
 def linear_annealing(n, total=8000, p_initial=1.0, p_final=0.05):
 	'''
@@ -9,70 +10,51 @@ def linear_annealing(n, total=8000, p_initial=1.0, p_final=0.05):
 	else: return p_initial - (n * (p_initial - p_final)) / total
 
 class QLearningNetwork:
-	def __init__ (self, num_actions, obs_size = 'auto', decay=0.9, lr=0.1,
-		explore_period=8000, explore_random_prob=0.2, exploit_random_prob=0.0):
-		self.actions = range(num_actions)
-		#self.e = 0.1
-		self.id = 0
-		self.e = lambda x: linear_annealing(x, explore_period,
-			explore_random_prob, exploit_random_prob)
-		tf.reset_default_graph()
-		self.inputs1 = tf.placeholder(shape=[1,2],dtype=tf.float32, name='self.inputs1')
-		self.W = tf.Variable(tf.random_uniform([2,2],0,0.01), name='self.W')
-		self.Qout = tf.matmul(self.inputs1,self.W, name='self.Qout')
-		self.predict = tf.argmax(self.Qout, 1, name='self.predict')
+	def __init__(self, num_actions, observation_size, decay=0.9,
+			learning_rate=0.1, exploration_random_prob=0.2,
+			exploitation_random_prob=0.0, exploration_period=8000,
+			store_every_nth=5, train_every_nth=5,
+			minibatch_size=32, max_experience=30000,
+			target_network_update_rate=0.01, scope="MLP"):
 
-		#Below we obtain the loss by taking the sum of squares difference between the target and prediction Q values.
-		self.nextQ = tf.placeholder(shape=[1,2],dtype=tf.float32, name='self.nextQ')
-		self.loss = tf.reduce_sum(tf.square(self.nextQ - self.Qout))
-		self.trainer = tf.train.GradientDescentOptimizer(learning_rate=0.1)
-		self.updateModel = self.trainer.minimize(self.loss)
+		self.observation_size = observation_size
+		self.num_actions = num_actions
 
-		self.allQ = None
-		self.rAll = 0
+		optimizer = tf.train.RMSPropOptimizer(learning_rate=learning_rate, decay=decay)
+		self.brain = MLP([observation_size,], [num_actions], [tf.identity], scope=scope)
+		self.brain_target = TargetMLP([observation_size,], [num_actions], [tf.identity], scope=scope)
+		self.session = tf.InteractiveSession()
 
-		init = tf.global_variables_initializer()
-
-		self.sess = tf.Session()
-		self.sess.run(init)
+		self.deepqlearning = DiscreteDeepQ( observation_size=observation_size,
+			num_actions=num_actions, observation_to_actions=self.brain,
+			target_actions=self.brain_target, optimizer=optimizer,
+			session=self.session, exploration_random_prob=float(exploration_random_prob),
+			exploitation_random_prob=float(exploitation_random_prob),
+			exploration_period=exploration_period,
+			store_every_nth=store_every_nth,
+			train_every_nth=train_every_nth,
+			minibatch_size=minibatch_size,
+			discount_rate=decay,
+			max_experience=max_experience,
+			target_network_update_rate=target_network_update_rate)
+		self.session.run(tf.initialize_all_variables())
 
 	def __del__(self):
-		self.sess.close()
+		self.session.close()
 
 	def choose(self, state):
 
-		if not state:
-			return random.choice(self.actions)
-			#return action
-
-		s=[state[-1]]
-		'''s: state '''
-		print('s', s)
-		a, allQ = self.sess.run([self.predict,self.Qout], feed_dict={self.inputs1:np.identity(4)[s:s]})
-
-
-		if random.random() < self.e(self.id):
-			return random.choice(self.actions)
-
-		self.id += 1
-		print(a)
-		return a[0]
+		state = np.array(state[-self.observation_size:])
+		if not state: # if we don't have any state, randomly do an action.
+			return random.choice(range(self.num_actions))
+		return self.deepqlearning.action(observation=state)
 
 	def learn(self, state, action, reward, new_state):
-		print(state,action,reward, new_state)
-		s = state[:-1]
-		a = action
-		r = reward
-		s1 = [new_state[:-1]]
+		state = np.array(state[-self.observation_size:])
+		new_state = np.array(new_state[-self.observation_size:])
 
-		Q1 = self.sess.run(self.Qout, feed_dict={self.inputs1:np.identity(4)[s1:s1]})
-		maxQ1 = np.max(Q1)
-
-		targetQ = self.allQ
-		targetQ[0, a] = r + self.y*maxQ1
-
-		_, W =  sess.run([updateModel, W], feed_dict={self.inputs1:np.identity(4)[s:s], nextQ:targetQ})
-		self.rAll += r
+		self.deepqlearning.store(state, action, reward, new_state)
+		self.deepqlearning.training_step()
 
 class QLearning:
 	def __init__ (self, num_actions, obs_size = 'auto', decay=0.9, lr=0.1,
