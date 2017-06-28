@@ -317,9 +317,12 @@ class DiscreteDeepQ(object):
             newstates_mask = np.empty((len(samples),))
             rewards        = np.empty((len(samples),))
 
+            #print(samples)
             for i, (state, action, reward, newstate) in enumerate(samples):
                 states[i] = state
                 action_mask[i] = 0
+                #if action == 'defect': action = 0
+                #elif action == ''
                 action_mask[i][action] = 1
                 rewards[i] = reward
                 if newstate is not None:
